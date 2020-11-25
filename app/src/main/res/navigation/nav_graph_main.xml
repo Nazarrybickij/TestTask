@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/productListingFragment"
+        android:name="com.nazarrybickij.testtask.fragments.ProductListingFragment"
+        android:label="ProductListingFragment"
+        tools:layout="@layout/product_listing_fragment">
+
+        <action
+            android:id="@+id/action_productListingFragment_to_productPageFragment"
+            app:destination="@id/productPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/basketFragment"
+        android:name="com.nazarrybickij.testtask.fragments.BasketFragment"
+        android:label="fragment_backet"
+        tools:layout="@layout/fragment_backet" >
+
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.nazarrybickij.testtask.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+
+    </fragment>
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.nazarrybickij.testtask.fragments.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" >
+
+    </fragment>
+    <fragment
+        android:id="@+id/productPageFragment"
+        android:name="com.nazarrybickij.testtask.fragments.ProductPageFragment"
+        android:label="fragment_product_page"
+        tools:layout="@layout/fragment_product_page" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.nazarrybickij.testtask.fragments.SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/action_splashFragment_to_viewPagerFragment"
+            app:destination="@id/viewPagerFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_productListingFragment"
+            app:destination="@id/productListingFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewPagerFragment"
+        android:name="com.nazarrybickij.testtask.onboarding.ViewPagerFragment"
+        android:label="fragment_view_pager"
+        tools:layout="@layout/fragment_view_pager" >
+        <action
+            android:id="@+id/action_viewPagerFragment_to_productListingFragment"
+            app:destination="@id/productListingFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/viewPagerFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

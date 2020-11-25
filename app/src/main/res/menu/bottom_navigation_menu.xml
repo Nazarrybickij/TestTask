@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/home_selector"
+        android:title=""
+        app:showAsAction="ifRoom"
+        android:enabled="true" />
+    <item
+        android:id="@+id/productListingFragment"
+        android:icon="@drawable/product_listing_selector"
+        android:title=""
+        app:showAsAction="ifRoom"
+        android:enabled="true"/>
+    <item
+        android:id="@+id/basketFragment"
+        android:icon="@drawable/basket_selector"
+        android:title=""
+        android:enabled="true"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/userFragment"
+        android:icon="@drawable/user_selector"
+        android:title=""
+        android:enabled="true"
+        app:showAsAction="always" />
+</menu>

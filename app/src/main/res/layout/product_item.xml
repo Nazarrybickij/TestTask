@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="160dp"
+    android:layout_height="300dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="30dp"
+    android:layout_marginBottom="30dp"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp">
+        <ImageView
+            android:id="@+id/image_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/image"
+            android:scaleType="centerCrop"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/like_icon"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="right"/>
+    </FrameLayout>
+    <TextView
+        android:id="@+id/name_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scaridian dress"
+        android:layout_marginTop="5dp"
+        android:textSize="14sp"
+        android:textColor="#1D1F22"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/price_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$ 50.00"
+            android:textColor="#1D1F22"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                android:id="@+id/decimal_rating_bar_item"
+                android:layout_width="55dp"
+                android:layout_height="10dp"
+                android:rating="4"
+                app:mrb_progressTint="@color/green"
+                app:mrb_progressBackgroundTint="@color/black"
+                style="@style/Widget.MaterialRatingBar.RatingBar.Indicator" />
+            <TextView
+                android:id="@+id/rating_text_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(8)"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
