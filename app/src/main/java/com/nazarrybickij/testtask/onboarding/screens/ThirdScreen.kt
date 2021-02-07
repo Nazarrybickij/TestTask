@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
+import com.nazarrybickij.testtask.activity.MainActivity
 import com.nazarrybickij.testtask.R
 import com.nazarrybickij.testtask.auth.SingInActivity
 import com.nazarrybickij.testtask.auth.SingUpActivity
@@ -30,8 +30,9 @@ class ThirdScreen : Fragment() {
         val image = view.findViewById<ImageView>(R.id.imageView3)
         Picasso.with(context).load(R.drawable.thri).fit().centerCrop().into(image)
         view.findViewById<LinearLayout>(R.id.finish).setOnClickListener {
-            findNavController().navigate(R.id.action_viewPagerFragment_to_productListingFragment)
-            onBoardingFinished()
+            val intent = Intent(context, MainActivity::class.java)
+            setOnBoardingFinished()
+            startActivity(intent)
         }
         view.findViewById<TextView>(R.id.sing_in).setOnClickListener {
             val intent = Intent(context,SingInActivity::class.java)
@@ -45,7 +46,7 @@ class ThirdScreen : Fragment() {
         return view
     }
 
-    private fun onBoardingFinished(){
+    private fun setOnBoardingFinished(){
         val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
         val editor = sharedPref.edit()
         editor.putBoolean("Finished", true)
@@ -56,11 +57,11 @@ class ThirdScreen : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == RC_SIGN_IN && resultCode == Activity.RESULT_OK) {
             findNavController().navigate(R.id.action_viewPagerFragment_to_productListingFragment)
-            onBoardingFinished()
+            setOnBoardingFinished()
         }
         if(requestCode == RC_SIGN_UP && resultCode == Activity.RESULT_OK) {
             findNavController().navigate(R.id.action_viewPagerFragment_to_productListingFragment)
-            onBoardingFinished()
+            setOnBoardingFinished()
         }
     }
     companion object{

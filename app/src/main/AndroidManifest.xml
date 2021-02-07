@@ -11,15 +11,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TestTask">
-        <activity android:name=".auth.SingUpActivity"></activity>
-        <activity android:name=".auth.SingInActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.SplashActivity"
+            android:theme="@style/Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".auth.SingUpActivity" />
+        <activity android:name=".auth.SingInActivity" />
+        <activity android:name=".onboarding.OnboardingActivity" />
+        <activity android:name=".activity.MainActivity"/>
+
     </application>
 
 </manifest>

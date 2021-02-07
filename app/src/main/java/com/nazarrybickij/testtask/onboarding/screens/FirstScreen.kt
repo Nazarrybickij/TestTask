@@ -19,7 +19,6 @@ class FirstScreen : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_first_screen, container, false)
 
-        val viewPager =  activity?.findViewById<ViewPager2>(R.id.viewPager)
         val image = view.findViewById<ImageView>(R.id.imageView)
         Picasso.with(context).load(R.drawable.first).fit().centerCrop().into(image)
 

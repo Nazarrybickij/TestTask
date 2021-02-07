@@ -50,13 +50,12 @@ class SingUpActivity : AppCompatActivity(), Validator.ValidationListener {
     }
 
     private fun singUp() {
-         val email = emailEditText.text.toString()
+        val email = emailEditText.text.toString()
         val password = passwordEditText.text.toString()
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.d("TAG", "createUserWithEmail:success")
-                    val user = auth.currentUser
                     setResult(RESULT_OK)
                     finish()
                 } else {
@@ -72,7 +71,7 @@ class SingUpActivity : AppCompatActivity(), Validator.ValidationListener {
             val view: View = error.view
             val message = error.getCollatedErrorMessage(this)
             if (view is EditText) {
-                (view as EditText).error = message
+                (view).error = message
             } else {
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show()
             }

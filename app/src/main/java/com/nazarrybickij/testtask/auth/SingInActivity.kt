@@ -34,7 +34,6 @@ class SingInActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.d("TAG", "signInWithEmail:success")
-                    val user = auth.currentUser
                     setResult(Activity.RESULT_OK)
                     finish()
                 } else {

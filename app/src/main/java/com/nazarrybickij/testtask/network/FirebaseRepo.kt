@@ -1,0 +1,32 @@
+package com.nazarrybickij.testtask.network
+
+import android.util.Log
+import com.nazarrybickij.testtask.App
+import com.nazarrybickij.testtask.ProductEntity
+import com.nazarrybickij.testtask.utils.Resource
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+
+@ExperimentalCoroutinesApi
+class FirebaseRepo: IRepo {
+
+    override suspend fun getProduct(): Flow<Resource<List<ProductEntity>>> = callbackFlow {
+        val document = App.dbFirebase.collection("dresses")
+        val listener = document.addSnapshotListener { snapshot, exception ->
+            if (snapshot != null) {
+                offer(Resource.success(snapshot.toObjects(ProductEntity::class.java)))
+            }
+            exception?.let {
+                offer(Resource.failed(it.message.toString()))
+                cancel(it.message.toString())
+            }
+        }
+        awaitClose {
+            listener.remove()
+            cancel()
+        }
+    }
+}

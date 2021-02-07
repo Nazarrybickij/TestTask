@@ -20,7 +20,6 @@ class SecondScreen : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_second_screen, container, false)
 
-        val viewPager =  activity?.findViewById<ViewPager2>(R.id.viewPager)
 
         val image = view.findViewById<ImageView>(R.id.imageView2)
         Picasso.with(context).load(R.drawable.second).fit().centerCrop().into(image)

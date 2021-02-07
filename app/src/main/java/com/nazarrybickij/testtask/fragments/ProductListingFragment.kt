@@ -2,11 +2,11 @@ package com.nazarrybickij.testtask.fragments
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -16,43 +16,77 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.nazarrybickij.testtask.*
 import com.nazarrybickij.testtask.adapters.ProductAdapter
+import com.nazarrybickij.testtask.databinding.FragmentProductListingBinding
+import com.nazarrybickij.testtask.utils.Resource
 import com.nazarrybickij.testtask.viewmodels.ProductListingViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
 
-class ProductListingFragment: Fragment() {
+class ProductListingFragment : Fragment() {
     private val adapter = ProductAdapter()
-    private lateinit var navController:NavController
+    private lateinit var navController: NavController
     private lateinit var viewModel: ProductListingViewModel
+    private lateinit var binding: FragmentProductListingBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_product_listing, container, false)
+        binding = FragmentProductListingBinding.bind(view)
         viewModel = ViewModelProvider(this).get(ProductListingViewModel::class.java)
         navController = findNavController()
-        activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)?.visibility = LinearLayout.VISIBLE
+        activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)?.visibility =
+            LinearLayout.VISIBLE
 
-        return inflater.inflate(R.layout.product_listing_fragment, container, false)
+        return view
     }
 
+    @ExperimentalCoroutinesApi
+    @InternalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val productRecyclerView = view.findViewById<RecyclerView>(R.id.product_recyclerView)
         setListProduct(productRecyclerView)
-        view.findViewById<LinearLayout>(R.id.sort_by_layout).setOnClickListener {
+        startObserving()
+        binding.sortByLayout.setOnClickListener {
 
         }
 
     }
-    private fun setListProduct(productRecyclerView:RecyclerView){
-        viewModel.getProducts().observe(viewLifecycleOwner,{
-            adapter.listProducts = it as MutableList<ProductEntity>
-            adapter.notifyDataSetChanged()
+    @ExperimentalCoroutinesApi
+    @InternalCoroutinesApi
+    private fun startObserving(){
+        viewModel.getProducts().observe(viewLifecycleOwner, {
+            when (it) {
+                is Resource.Success -> {
+                    adapter.listProducts = it.data as MutableList<ProductEntity>
+                    adapter.notifyDataSetChanged()
+                    binding.progressBar.visibility = LinearLayout.GONE
+                    binding.productRecyclerView.visibility = LinearLayout.VISIBLE
+                }
+                is Resource.Loading -> {
+                    binding.progressBar.visibility = LinearLayout.VISIBLE
+                    binding.productRecyclerView.visibility = LinearLayout.GONE
+                }
+                is Resource.Failed -> {
+                    Toast.makeText(activity,"I DO NOT KNOW",Toast.LENGTH_LONG).show()
+                    binding.progressBar.visibility = LinearLayout.GONE
+                    binding.productRecyclerView.visibility = LinearLayout.GONE
+                }
+            }
         })
-        val callback = object : ProductAdapter.AdapterCallback{
+    }
+
+    private fun setListProduct(productRecyclerView: RecyclerView) {
+            val callback = object : ProductAdapter.AdapterCallback {
             override fun onItemClick(productEntity: ProductEntity) {
                 val bundle = Bundle()
-                bundle.putParcelable("product",productEntity)
-                navController.navigate(R.id.action_productListingFragment_to_productPageFragment,bundle)
+                bundle.putParcelable("product", productEntity)
+                navController.navigate(
+                    R.id.action_productListingFragment_to_productPageFragment,
+                    bundle
+                )
             }
 
             override fun onFavClick() {
@@ -61,7 +95,7 @@ class ProductListingFragment: Fragment() {
         }
         val orientation = App.getResources.configuration.orientation
         var spanCount = 2
-        when(orientation){
+        when (orientation) {
             Configuration.ORIENTATION_PORTRAIT -> spanCount = 2
             Configuration.ORIENTATION_LANDSCAPE -> spanCount = 3
         }

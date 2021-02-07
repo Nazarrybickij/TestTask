@@ -1,24 +1,29 @@
 package com.nazarrybickij.testtask.viewmodels
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.nazarrybickij.testtask.App
-import com.nazarrybickij.testtask.ProductEntity
+import androidx.lifecycle.liveData
+import com.nazarrybickij.testtask.network.FirebaseRepo
+import com.nazarrybickij.testtask.utils.Resource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 
-class ProductListingViewModel:ViewModel() {
-    private val listProducts = MutableLiveData<List<ProductEntity>>()
-
-    fun getProducts():MutableLiveData<List<ProductEntity>>{
-        App.dbFirebase.collection("dresses")
-            .get()
-            .addOnSuccessListener { result ->
-                val list = result.toObjects(ProductEntity::class.java)
-                listProducts.value = list
+class ProductListingViewModel : ViewModel() {
+    @ExperimentalCoroutinesApi
+    val repo = FirebaseRepo()
+    @ExperimentalCoroutinesApi
+    @InternalCoroutinesApi
+    fun getProducts() = liveData(Dispatchers.IO) {
+        emit(Resource.loading())
+        try{
+            repo.getProduct().collect{
+                emit(it)
             }
-            .addOnFailureListener { exception ->
-                Log.w("TAG", "Error getting documents.", exception)
-            }
-        return listProducts
+        }catch (e: Exception){
+            emit(Resource.failed(e.message.toString()))
+            Log.e("ERROR:", e.message.toString())
+        }
     }
 }
