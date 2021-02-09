@@ -11,11 +11,8 @@ class App : Application() {
         super.onCreate()
         getResources = resources
         context = this
-        dbFirebase = Firebase.firestore
-
     }
     companion object {
-        lateinit var dbFirebase:FirebaseFirestore
         lateinit var context:App
         lateinit var getResources: Resources
     }

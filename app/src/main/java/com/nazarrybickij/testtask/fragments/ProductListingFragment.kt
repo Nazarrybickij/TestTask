@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -26,7 +26,7 @@ import kotlinx.coroutines.InternalCoroutinesApi
 class ProductListingFragment : Fragment() {
     private val adapter = ProductAdapter()
     private lateinit var navController: NavController
-    private lateinit var viewModel: ProductListingViewModel
+    private val viewModel: ProductListingViewModel by viewModels()
     private lateinit var binding: FragmentProductListingBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +34,6 @@ class ProductListingFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_product_listing, container, false)
         binding = FragmentProductListingBinding.bind(view)
-        viewModel = ViewModelProvider(this).get(ProductListingViewModel::class.java)
         navController = findNavController()
         activity?.findViewById<BottomNavigationView>(R.id.bottom_navigation)?.visibility =
             LinearLayout.VISIBLE
@@ -54,9 +53,10 @@ class ProductListingFragment : Fragment() {
         }
 
     }
+
     @ExperimentalCoroutinesApi
     @InternalCoroutinesApi
-    private fun startObserving(){
+    private fun startObserving() {
         viewModel.getProducts().observe(viewLifecycleOwner, {
             when (it) {
                 is Resource.Success -> {
@@ -70,16 +70,19 @@ class ProductListingFragment : Fragment() {
                     binding.productRecyclerView.visibility = LinearLayout.GONE
                 }
                 is Resource.Failed -> {
-                    Toast.makeText(activity,"I DO NOT KNOW",Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, "I DO NOT KNOW", Toast.LENGTH_LONG).show()
                     binding.progressBar.visibility = LinearLayout.GONE
                     binding.productRecyclerView.visibility = LinearLayout.GONE
                 }
+                else -> Unit
             }
         })
     }
 
     private fun setListProduct(productRecyclerView: RecyclerView) {
-            val callback = object : ProductAdapter.AdapterCallback {
+        val orientation = App.getResources.configuration.orientation
+        var spanCount = 2
+        val callback = object : ProductAdapter.AdapterCallback {
             override fun onItemClick(productEntity: ProductEntity) {
                 val bundle = Bundle()
                 bundle.putParcelable("product", productEntity)
@@ -93,8 +96,6 @@ class ProductListingFragment : Fragment() {
 
             }
         }
-        val orientation = App.getResources.configuration.orientation
-        var spanCount = 2
         when (orientation) {
             Configuration.ORIENTATION_PORTRAIT -> spanCount = 2
             Configuration.ORIENTATION_LANDSCAPE -> spanCount = 3

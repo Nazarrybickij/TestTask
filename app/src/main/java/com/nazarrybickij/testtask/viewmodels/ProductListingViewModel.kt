@@ -8,6 +8,7 @@ import com.nazarrybickij.testtask.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 
 class ProductListingViewModel : ViewModel() {

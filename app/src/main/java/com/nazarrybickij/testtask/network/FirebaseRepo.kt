@@ -1,7 +1,7 @@
 package com.nazarrybickij.testtask.network
 
-import android.util.Log
-import com.nazarrybickij.testtask.App
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.nazarrybickij.testtask.ProductEntity
 import com.nazarrybickij.testtask.utils.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
 @ExperimentalCoroutinesApi
-class FirebaseRepo: IRepo {
+class FirebaseRepo: IFireRepo {
 
-    override suspend fun getProduct(): Flow<Resource<List<ProductEntity>>> = callbackFlow {
-        val document = App.dbFirebase.collection("dresses")
+    override fun getProduct(): Flow<Resource<List<ProductEntity>>> = callbackFlow {
+        val document = Firebase.firestore.collection("dresses")
         val listener = document.addSnapshotListener { snapshot, exception ->
             if (snapshot != null) {
                 offer(Resource.success(snapshot.toObjects(ProductEntity::class.java)))

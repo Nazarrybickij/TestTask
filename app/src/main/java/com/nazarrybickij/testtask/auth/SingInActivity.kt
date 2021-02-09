@@ -17,6 +17,7 @@ class SingInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sing_in)
         auth = FirebaseAuth.getInstance()
+        supportActionBar?.hide()
         val currentUser = auth.currentUser
         if (currentUser != null){
             setResult(Activity.RESULT_OK)

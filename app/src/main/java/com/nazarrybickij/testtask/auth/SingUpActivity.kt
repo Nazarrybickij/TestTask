@@ -30,6 +30,7 @@ class SingUpActivity : AppCompatActivity(), Validator.ValidationListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sing_up)
+        supportActionBar?.hide()
         auth = FirebaseAuth.getInstance()
         emailEditText = findViewById(R.id.email_edit_text)
         passwordEditText = findViewById(R.id.password_edit_text)
